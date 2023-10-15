@@ -7,6 +7,33 @@ export plot, plotvar!, addmeridian!, addequator!, lonlat2xyz
 
 
 """
+   fig,ax,plt = plot(ds) 
+
+Plots dataset `ds` 
+
+"""
+
+function plot(ds::CommonDataModel.AbstractDataset; kwargs...)
+    vars = setdiff(keys(ds), CommonDataModel.dimnames(ds))  
+    
+    fig = Figure(resolution=(1200,1200), figure_padding=0)
+    menu = Menu(fig[1,1], options = vars,default=vars[1]) 
+    ax = LScene(fig[2,1], show_axis=false)
+    display(fig)
+    sel= Observable(vars[1]) 
+    field = @lift(view(ds,time=1)[$sel])
+    plt = plotvar!(ax,field)
+    # cbax = Colorbar(fig[2,1],plt)
+    on(menu.selection) do seli
+      sel[] = seli
+    end 
+
+
+end 
+
+
+
+"""
     fig,ax,plt = plot(var)
 
 Plots variable `var` on the sphere. Returns `fig` `ax` and `plt`. 
@@ -17,9 +44,7 @@ function plot(var::Observable{<:CommonDataModel.AbstractVariable{T}}; kwargs...)
     ax = LScene(fig[1,1],show_axis=false)
     plt = plotvar!(ax,var; kwargs...)    
 
-    #addequator!(ax,linewidth=2,color=:black) # ,linestyle=:dash)
-    #addmeridian!(ax,linewidth=2,color=:black) #,linestyle=:dash)
-#     display(fig)
+    display(fig)
     return fig,ax,plt     
 end 
 
@@ -33,14 +58,14 @@ Plots variables `var` into axis `ax`
 function plotvar!(ax,var::Observable; kwargs...)
     lons = collect(var[]["longitude"])
     lats = collect(var[]["latitude"])
-    data = @lift(nomissing(collect($var)))
+    data = @lift(convert(Matrix{Float64},$var[:,:]))
     
     lons2 = isperiodiclon(lons) ? lonpadview(lons) : lons
     data2 = isperiodiclon(lons) ? @lift(lonpadview($data)) : data
     x,y,z = lonlat2xyz(lons2,lats)
 
     invert_normals = isa(lons,Vector) ? true : false
-    surface!(ax,x,y,z,color=data2, invert_normals = invert_normals; kwargs...)
+    plt = surface!(ax,x,y,z,color=data2, invert_normals = invert_normals; kwargs...)
     
 end 
 
@@ -88,7 +113,7 @@ function lonlat2xyz(lons::AbstractVector, lats::AbstractVector)
     return (x, y, z)
 end
 
-function lonlat2xyz(lons::Matrix, lats::Matrix)
+function lonlat2xyz(lons::AbstractMatrix, lats::AbstractMatrix)
     x = cosd.(lats).*cosd.(lons)
     y = cosd.(lats).*sind.(lons)
     z = sind.(lats)
@@ -101,8 +126,8 @@ end
 
 Returns `true` if `lons` is a `Vector` and `lons` is periodic. `false` if lons is a `Matrix` (irregular grid LAM model)
 """
-isperiodiclon(lons::Vector) = (lons[end] + (lons[2]-lons[1])) % 360 == 0
-isperiodiclon(lons::Matrix) = false
+isperiodiclon(lons::AbstractVector) = (lons[end] + (lons[2]-lons[1])) % 360 == 0
+isperiodiclon(lons::AbstractMatrix) = false
 
 """
     lonpadview(data::Matrix) 
@@ -110,8 +135,8 @@ isperiodiclon(lons::Matrix) = false
    
 Returns a `view` of `data` with the first row (assumed to be the longitude dimensions repeated at the end. 
 """
-lonpadview(data::Matrix) = view(data,[1:size(data)[1]...,1],1:size(data)[2])
-lonpadview(lon::Vector) = view(lon,[1:length(lon)...,1]) 
+lonpadview(data::AbstractMatrix) = view(data,[1:size(data)[1]...,1],1:size(data)[2])
+lonpadview(lon::AbstractVector) = view(lon,[1:length(lon)...,1]) 
 
 
 # include("precompile.jl")

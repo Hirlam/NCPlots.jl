@@ -1,5 +1,5 @@
 
-using NCPlots
+using NCPlots, NCDatasets, GLMakie
 
 ds = Dataset("/home/roel/era5/era5_pressure_levels_geopotential_pv.nc")
 

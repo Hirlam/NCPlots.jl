@@ -1,7 +1,7 @@
 name = "NCPlots"
 uuid = "bb7f0a92-8966-4c85-beb0-c371d13b1908"
 authors = ["Roel Stappers <roels@met.no> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 CommonDataModel = "1fbeeb36-5f17-413c-809b-666fb144f157"
