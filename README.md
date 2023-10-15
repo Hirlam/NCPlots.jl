@@ -1,7 +1,7 @@
 # NCPlots 
 
 
-Plots NetCDF files. See documentation 
+Plots NetCDF files. See [documentation](https://hirlam.github.io/NCPlots.jl/) 
 
 ![](docs/src/assets/marble2.png)
 
