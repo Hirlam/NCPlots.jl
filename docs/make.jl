@@ -11,6 +11,7 @@ makedocs(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://Hirlam.github.io/NCPlots.jl",
         edit_link="main",
+        collapselevel = 1,
         assets=String[],
     ),
     pages=[
