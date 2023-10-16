@@ -22,5 +22,5 @@ end
 
 function Menu(fig, dim::CommonDataModel.AbstractVariable)
     @assert length(dimnames(dim)) == 1 
-    Makie.Menu(fig,options=zip(dim[:],1:length(dim[:])))
+    Makie.Menu(fig,options=zip(dim[:],1:length(dim[:])),default=1)
 end 
