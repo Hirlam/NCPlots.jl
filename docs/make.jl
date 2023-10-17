@@ -20,10 +20,12 @@ makedocs(;
             "Basic" => "examples/era5_pv.md",
             "Light" => "examples/light.md",
             "Animation" => "examples/animations.md",
-            "Geopotential height" => "examples/geopotential.md",
-            "Sliders and Menus" => "examples/sliders_menus.md",
             "Multiple plot in axis" => "examples/single_axis.md",
-            "Limited Area plots" => "examples/lam.md"
+            "Geopotential height" => "examples/geopotential.md",
+            "Limited Area plots" => "examples/lam.md",
+            "Metcoop Increments" => "examples/metcoop.md"
+            "Sliders and Menus" => "examples/sliders_menus.md",
+             
         ], 
         "Getting data" => "cds.md",
         "Keyboard control" => "keyboard.md",
