@@ -5,6 +5,7 @@ version = "0.1.1"
 
 [deps]
 CommonDataModel = "1fbeeb36-5f17-413c-809b-666fb144f157"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 
 [compat]
