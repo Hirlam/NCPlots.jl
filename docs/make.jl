@@ -23,7 +23,7 @@ makedocs(;
             "Multiple plot in axis" => "examples/single_axis.md",
             "Geopotential height" => "examples/geopotential.md",
             "Limited Area plots" => "examples/lam.md",
-            "Metcoop Increments" => "examples/metcoop.md"
+            "Metcoop Increments" => "examples/metcoop.md",
             "Sliders and Menus" => "examples/sliders_menus.md",
              
         ], 
