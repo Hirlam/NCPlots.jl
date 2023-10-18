@@ -1,10 +1,12 @@
 module NCPlots
 
 
-using Makie, CommonDataModel
+using Makie, CommonDataModel, Dates
 
 export plot, plotvar!, addmeridian!, addequator!, lonlat2xyz
+export SliderGridElem, Menu
 
+include("slider.jl")
 
 """
    fig,ax,plt = plot(ds) 
@@ -12,7 +14,6 @@ export plot, plotvar!, addmeridian!, addequator!, lonlat2xyz
 Plots dataset `ds` 
 
 """
-
 function plot(ds::CommonDataModel.AbstractDataset; kwargs...)
     vars = setdiff(keys(ds), CommonDataModel.dimnames(ds))  
     
@@ -119,7 +120,20 @@ function lonlat2xyz(lons::AbstractMatrix, lats::AbstractMatrix)
     z = sind.(lats)
     return (x, y, z)
 end
+
+lonlat2xyz(lon::Number, lat::Number) = [cosd(lat)*cosd(lon),cosd(lat)*sind(lon),sind(lat)]
+lonlat2xyz(lonlat::Vector) = lonlat2xyz(lonlat[1],lonlat[2]) # for two element vector
+lonlat2xyz(lonlat::Tuple) = lonlat2xyz(lonlat[1],lonlat[2])  # for two element tuple
+lonlat2xyz(lonlat::Vector{Tuple}) = lonlat2xyz.(lonlat[1],lonlat[2]) 
+
+
   
+#function lonlat2xyz(lonlat::Vector)
+#    lon = first.(lonlat)
+#    lat = last.(lonlat)
+#    x,y,z = lonlat2xyz.(lon,lat)    
+#    return x,y,z
+#end
 
 """
     isperiodiclon(lons)
